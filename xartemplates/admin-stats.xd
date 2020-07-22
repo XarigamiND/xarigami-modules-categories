@@ -1,0 +1,214 @@
+<xar:comment> License: GPL http://www.gnu.org/copyleft/gpl.html </xar:comment>
+<xar:style file="xgamisprites" module="base" scope="module" />
+<xar:template file="jq-category-delvalidate" module="categories" />
+<xar:set name="deletelabel"><xar:mlstring>Delete</xar:mlstring></xar:set>
+<xar:set name="deleteicon">'<span class="esprite xs-delete" title="'.$deletelabel.'"><span style="font-weight:strong;">'.$deletelabel.'</span></span>&#160;'</xar:set>
+<div class="xar-mod-page">
+    <div class="xar-mod-head">
+        <xar:if condition="!xarRequestIsAJAX()">
+            <xar:template type="module"  module="base" file="admin-menu" />
+        </xar:if>
+    </div>
+    <div class="xar-mod-body">
+        <h1>
+            <xar:mlstring>View statistics</xar:mlstring>
+        </h1>
+        <div class="xar-mod-content">
+            <xar:if condition="empty($modid)">
+                <div class="xar-align-left xar-padding-thick">
+                    <ul style="list-style-type:circle;">
+                        <li>
+                            <xar:ml>
+                                <xar:mlstring>Click on #(1) to delete all category links associated with a particular module.</xar:mlstring>
+                                <xar:mlvar>#$deleteicon#</xar:mlvar>
+                            </xar:ml>
+                        </li>
+                        <li>
+                            <xar:mlstring>
+                            Click on a module name to take you to that module's statistics page containing
+                            the figures for each of the module's items with associated category links.
+                            From there you can delete all category links associated with a particular item.
+                            </xar:mlstring>
+                        </li>
+                    </ul>
+                </div>
+                <table class="xar-items">
+                    <thead>
+                        <tr>
+                            <th>
+                                <xar:mlstring>Module Name</xar:mlstring>
+                            </th>
+                            <th class="xar-align-center">
+                                <xar:mlstring>Module Items</xar:mlstring>
+                            </th>
+                            <th class="xar-align-center">
+                                <xar:mlstring>Distinct Categories</xar:mlstring>
+                            </th>
+                            <th class="xar-align-center">
+                                <xar:mlstring>Total Links</xar:mlstring>
+                            </th>
+                            <th class="xar-align-center">
+                                <xar:mlstring>Action</xar:mlstring>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <xar:if condition="empty($moditems) or count($moditems) eq '0'">
+                            <tr>
+                                <td colspan="5" class="xar-align-center">
+                                    <p>
+                                    <xar:mlstring>
+                                        There are currently no category links in the database...
+                                    </xar:mlstring>
+                                    </p>
+                                </td>
+                            </tr>
+                        <xar:else />
+                            <xar:set name="deleteid">1</xar:set>
+                            <xar:set name="rowclass">'xar-norm'</xar:set>
+                            <xar:foreach in="$moditems" value="$moditem">
+
+                                <tr class="#$rowclass#">
+                                    <td>
+                                        <a href="#$moditem['link']#">#$moditem['name']#</a>
+                                    </td>
+                                    <td class="xar-align-right">
+                                        #$moditem['numitems']#
+                                    </td>
+                                    <td class="xar-align-right">
+                                        #$moditem['numcats']#
+                                    </td>
+                                    <td class="xar-align-right">
+                                        #$moditem['numlinks']#
+                                    </td>
+                                    <td class="xar-item-actions">
+                                        <a href="#$moditem['delete']#" id="delete_#$deleteid#" title="#xarML('Delete')#" class="esprite xs-delete"><span>#$deletelabel#</span></a>
+                                    </td>
+                                </tr>
+                            <xar:set name="rowclass">$rowclass == 'xar-norm' ? 'xar-accent' : 'xar-norm'</xar:set>
+                            <xar:set name="deleteid">$deleteid + 1</xar:set>
+                            </xar:foreach>
+                            <tr class="xar-accent">
+                                <td >
+                                    <xar:mlstring>Grand Total</xar:mlstring>
+                                </td>
+                                <td class="xar-align-right">
+                                    #$numitems#
+                                </td>
+                                <td class="xar-align-right">
+                                    -
+                                </td>
+                                <td class="xar-align-right">
+                                    #$numlinks#
+                                </td>
+                                <td class="xar-item-actions">
+                                    <a href="#$delete#">Delete All</a>
+                                </td>
+                            </tr>
+                    </xar:if>
+                    </tbody>
+                </table>
+
+            <xar:else/>
+                <h3>
+                    <xar:ml>
+                        <xar:mlstring>Module #(1)</xar:mlstring>
+                        <xar:mlvar>#$modname#</xar:mlvar>
+                    </xar:ml>
+                </h3>
+                <div class="xar-floatleft xar-padding-thick">
+                    <xar:ml>
+                        <xar:mlstring>Click on #(1) to delete all category links associated with a particular module.</xar:mlstring>
+                        <xar:mlvar>#$deleteicon#</xar:mlvar>
+                    </xar:ml>
+                </div>
+                <xar:if condition="empty($catid)">
+                    <p class="xar-floatright">
+                        <a href="#xarModURL('categories','admin','checklinks',array('modid' => $modid, 'itemtype' => $itemtype))#"><xar:mlstring>Check Orphan Links</xar:mlstring></a>
+                    </p>
+                </xar:if>
+
+                <xar:set name="urlextra">array('modid' => $modid)</xar:set>
+                <div class="xar-clearleft xar-align-left">
+                    <xar:categories-navigation module="$module" itemtype="$itemtype" catid="$catid" urlmodule="categories" type="admin" func="stats" urlextra="$urlextra" showcatcount="2" />
+                </div>
+                <table class="xar-items">
+                <thead>
+                    <tr>
+                        <th>
+                            <xar:if condition="empty($sortlink['itemid'])">
+                                <xar:mlstring>Item Id</xar:mlstring>
+                            <xar:else/>
+                                <a href="#$sortlink['itemid']#"><xar:mlstring>Item Id</xar:mlstring></a>
+                            </xar:if>
+                        </th>
+                        <th >
+                            <xar:mlstring>Category Links</xar:mlstring>
+                        </th>
+                        <th class="xar-item-actions" >
+                            <xar:mlstring>Action</xar:mlstring>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <xar:set name="rowclass">'xar-norm'</xar:set>
+                    <xar:if condition="empty($moditems) or count($moditems) eq '0'">
+                        <tr>
+                            <td colspan="3" class="xar-align-center">
+                                <xar:mlstring>
+                                    There are currently no category links attached to this module.
+                                </xar:mlstring>
+                            </td>
+                        </tr>
+                    <xar:else />
+                        <xar:set name="deleteid">1</xar:set>
+                        <xar:foreach in="$moditems" key="$itemid" value="$moditem">
+                            <tr class="#$rowclass# xar-valign-top">
+                                <td>
+                                    <xar:if condition="!empty($moditem['title']) and !empty($moditem['link'])">
+                                        #$itemid# - <a href="#$moditem['link']#">#$moditem['title']# </a>
+                                    <xar:else/>
+                                        #$itemid#
+                                    </xar:if>
+                                </td>
+                                <td >
+                                    <xar:foreach in="$moditem['cids']" value="$cid">
+                                        <div>
+                                            <xar:if condition="!empty($catinfo[$cid])">
+                                                #$catinfo[$cid]['name']#
+                                            <xar:else/>
+                                                #$cid#
+                                            </xar:if>
+                                        </div>
+                                    </xar:foreach>
+                                </td>
+                                <td class="xar-align-center">
+                                    <a href="#$moditem['delete']#" id="delete_#$deleteid#" class="esprite xs-delete" title="#$deletelabel#"><span>#$deletelabel#</span></a>
+                                </td>
+                            </tr>
+                            <xar:set name="rowclass">$rowclass == 'xar-norm' ? 'xar-alt' : 'xar-norm'</xar:set>
+                            <xar:set name="deleteid">$deleteid + 1</xar:set>
+                        </xar:foreach>
+                            <tr class="xar-accent">
+                                <td>
+                                    <strong><xar:mlstring>Grand Total:</xar:mlstring></strong>
+                                </td>
+                                <td class="xar-align-right">
+                                    <strong>#$numlinks#</strong>
+                                </td>
+                                <td class="xar-item-actions">
+                                    <a href="#$delete#"><xar:mlstring>Delete All</xar:mlstring></a>
+                                </td>
+                            </tr>
+                        </xar:if>
+                    </tbody>
+                </table>
+                <xar:if condition="!empty($pager)">
+                    <div>
+                        #$pager#
+                    </div>
+                </xar:if>
+            </xar:if>
+        </div>
+    </div>
+</div>

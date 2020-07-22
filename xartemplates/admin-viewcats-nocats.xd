@@ -1,0 +1,17 @@
+<xar:comment> License: GPL http://www.gnu.org/copyleft/gpl.html </xar:comment>
+<div class="xar-mod-page">
+    <div class="xar-mod-head">
+        <xar:if condition="!xarRequestIsAJAX()">
+            <xar:template type="module"  module="base" file="admin-menu" />
+        </xar:if>
+    </div>
+    <div class="xar-mod-body">
+        <h1>
+            <xar:mlstring>View categories</xar:mlstring>
+        </h1>
+        <div class="xar-mod-content">
+
+            <div align="center"><h3><xar:mlstring>No categories Found in the Database</xar:mlstring></h3></div><br />
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="xar-mod-page">
+    <div class="xar-mod-head">
+        <xar:if condition="!xarRequestIsAJAX()">
+            <xar:template type="module"  module="base" file="admin-menu" />
+        </xar:if>
+    </div>
+    <div class="xar-mod-body">
+        <h1>
+            <xar:mlstring>Delete category link</xar:mlstring>
+        </h1>
+        <div class="xar-mod-content">
+            <form method="post" action="&xar-modurl-categories-admin-unlink;">
+                <fieldset>
+                    <legend>
+                        <xar:mlstring>Confirm deletion</xar:mlstring>
+                 </legend>
+                <div class="xar-form-input-wrapper-before">
+                    <xar:if condition="empty($modname)">
+                        <xar:mlstring>Are you sure you want to delete all category links ?</xar:mlstring>
+                    <xar:elseif condition="empty($itemid)"/>
+                        <xar:ml>
+                            <xar:mlstring>Are you sure you want to delete all category links for module <strong>#(1)</strong> ?</xar:mlstring>
+                            <xar:mlvar>#$modname#</xar:mlvar>
+                        </xar:ml>
+                    <xar:else/>
+                        <xar:ml><xar:mlstring>Are you sure you want to delete all category links for module <strong>#(1)</strong> item <strong>#(2)</strong> ?</xar:mlstring><xar:mlvar>#$modname#</xar:mlvar><xar:mlvar>#$itemid#</xar:mlvar></xar:ml>
+                    </xar:if>
+                </div>
+                </fieldset>
+                <div class="xar-form-footer">
+                    <input type="submit" name="confirm" id="confirm" value="#$confirmbutton#"  />
+                    <input type="hidden" name="authid" id="authid" value="#$authid#" />
+                    <input type="hidden" name="modid" id="modid" value="#$modid#" />
+                    <input type="hidden" name="itemtype" id="itemtype" value="#$itemtype#" />
+                    <input type="hidden" name="itemid" id="itemid" value="#$itemid#" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

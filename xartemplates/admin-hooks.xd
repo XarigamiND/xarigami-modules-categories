@@ -1,0 +1,24 @@
+<xar:base-include-javascript libname="jquery" libfile="jquery.min" plugin="ui" pluginfile="ui.core.min,ui.dialog.min,ui.dragdropsort.min" style="ui.css" position="body"/>
+<xar:comment>Include the js code for the tree view and related plugin</xar:comment>
+<xar:template type="module" module="modules" file="jq-hooks" />
+<div class="xar-mod-page">
+    <div class="xar-mod-head">
+         <xar:if condition="!xarRequestIsAJAX()">
+            <xar:template type="module" module="base" file="admin-menu" />
+        </xar:if>
+    </div>
+    <div class="xar-mod-body">
+        <h1>
+             <xar:mlstring> Configure Category Hooks</xar:mlstring>
+        </h1>
+            <div class="xar-mod-content">
+            <xar:set name="url">#xarModURL('categories','admin','hooks')#</xar:set>
+            <xar:module main="false" module="modules" type="admin" func="hooks" curhook="categories" return_url="$url"/>
+              <p>
+            Note: not all modules fully support categories and category browsing via their own templates. Some modules such as Articles, Uploads and XarBB are configured for category hooks.
+            Other modules may support some aspects of categories or require addition of extra code to functions or templates. Please see individual module Overviews for details.
+            </p>
+        </div>
+    </div>
+
+</div>

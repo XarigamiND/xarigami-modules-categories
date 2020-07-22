@@ -1,0 +1,114 @@
+/* jQuery treetable Core 3.0 stylesheet
+ *
+ * This file contains styles that are used to display the tree table. Each tree
+ * table is assigned the +treetable+ class.
+ * ========================================================================= */
+ * Custom classes for Xarigami Categories */
+ * Last edited 31 March 2013 */
+
+table.treetable span.indenter {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -webkit-user-select: none;
+  width: 19px;
+}
+
+table.treetable span.indenter a {
+  background-position: left center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  text-decoration: none;
+  border-bottom:none;
+  width: 19px;
+}
+
+
+table.treetable {
+  border: 1px solid #888;
+  border-collapse: collapse;
+  line-height: 1;
+  margin: .6em 0 1.8em 0;
+  width: 100%;
+}
+
+table.treetable caption {
+  font-size: .9em;
+  font-weight: bold;
+  margin-bottom: .5em;
+    text-align:left;
+}
+
+table.treetable thead {
+  background: #aaa url(../images/bg-table-thead.png) repeat-x top left;
+}
+
+table.treetable thead tr th {
+  border: 1px solid #888;
+  padding: .3em 1em .1em 1em;
+  text-align: left;
+}
+
+table.treetable tbody tr td {
+  cursor: default;
+  padding: .3em 1em;
+}
+
+table.treetable span {
+  background-position: center left;
+  background-repeat: no-repeat;
+  padding: .2em 0 .2em 1.5em;
+}
+
+table.treetable span.file {
+  background-image: url(../images/file.png);
+}
+table.treetable tr.collapsed td span.folder {
+    background-image: url(../images/folder.png);
+}
+table.treetable tr.expanded td span.folder {
+    background-image: url(../images/folder-open.png);
+}
+
+table.treetable tr.collapsed span.indenter a {
+  background-image: url(../images/expand.png) ;
+  border-bottom:none;
+}
+
+table.treetable tr.expanded span.indenter a {
+  background-image: url(../images/collapse.png) ;
+  border-bottom:none;
+}
+
+table.treetable tr.selected {
+  background-color: #3875d7;
+  color: #fff;
+}
+
+table.treetable tr.collapsed.selected span.indenter a {
+  background-image: url(../images/expand-light.png);
+  border-bottom:none;
+}
+
+table.treetable tr.expanded.selected span.indenter a {
+  background-image: url(../images/collapse-light.png);
+    border-bottom:none;
+}
+
+table.treetable tr.accept {
+  background-color: #a3bce4;
+  color: #fff
+}
+
+table.treetable tr.collapsed.accept td span.indenter a {
+  background-image: url(../images/expand-light.png);
+}
+
+table.treetable tr.expanded.accept td span.indenter a {
+  background-image: url(../images/collapse-light.png);
+}

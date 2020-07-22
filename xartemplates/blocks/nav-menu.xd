@@ -1,0 +1,19 @@
+<xar:template file="jq-category-nav-menu" module="categories" />
+
+<xar:comment>By setting a z-index greater for horizontal bars, we expect them to be able to overlap vertical block (including other menus)</xar:comment>
+<xar:set name="zindx">$menutype == 1? 100 : 150 </xar:set>
+<xar:comment>Code below has no identation. Attempts to format/ident it to look ok while looking into source code generated. Can be still greatly improved.</xar:comment>
+<div class="xar-floatleft xar-fullwidth" style="position: relative; z-index: #$zindx#;">
+
+<xar:foreach in="$catmenuitems['items']" value="$item"><xar:set name="ident">str_repeat(' ', $item['indentation']*4)</xar:set><xar:if condition="!empty($item['beforetags'])">#$ident##$item['beforetags']#</xar:if>
+<xar:if condition="empty($item['class'])">
+    <xar:set name="linkclass">''</xar:set>
+<xar:else/>
+    <xar:set name="linkclass">' class="' . $item['class'] . '"'</xar:set>
+</xar:if>
+<a#$linkclass# href="#$item['link']#">#$item['name']#</a><xar:if condition="!empty($item['aftertags'])">#$item['aftertags']#</xar:if>
+<xar:comment>Keep the carriage return here</xar:comment>
+
+</xar:foreach>
+</div>
+<div class="xar-clearboth"></div>

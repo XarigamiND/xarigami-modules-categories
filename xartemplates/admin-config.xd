@@ -1,0 +1,114 @@
+<xar:comment> License: GPL http://www.gnu.org/copyleft/gpl.html </xar:comment>
+<xar:template file="jq-category-delvalidate" module="categories" />
+<div class="xar-mod-page">
+    <div class="xar-mod-head">
+        <xar:if condition="!xarRequestIsAJAX()">
+            <xar:template type="module"  module="base" file="admin-menu" />
+        </xar:if>
+    </div>
+    <div class="xar-mod-body">
+        <h1>
+            <xar:mlstring>Modify configuration</xar:mlstring>
+        </h1>
+        <div class="xar-mod-content">
+            <form action="#xarModURL('categories','admin','modifyconfig')#" method="post" id="categoriesconfigform" enctype="application/x-www-form-urlencoded">
+                <fieldset class="xar-norm">
+                    <legend>
+                        <xar:mlstring>Settings</xar:mlstring>
+                    </legend>
+                    <div class="xar-form-input-wrapper">
+                        <label for="catsperpage" class="xar-form-label" title="#xarML('The number of categories that you want displayed per page')#">
+                                <xar:mlstring>Categories per page</xar:mlstring>
+                        </label>
+                        <input type="text" name="catsperpage" id="catsperpage" value="#$catsperpage#" size="5" />
+                    </div>
+                    <div class="xar-form-input-wrapper">
+                        <label for="numstats" class="xar-form-label" title="#xarML('Specify how many links you want to see per page.')#">
+                                 <xar:mlstring>
+                                    Number of links shown in statistics
+                                </xar:mlstring>
+                        </label>
+                        <input type="text" name="numstats" id="numstats" size="4" maxlength="4" value="#$numstats#" />
+                    </div>
+                    <div class="xar-form-input-wrapper">
+                        <label for="inputsize" class="xar-form-label" title="#xarML('Specify the size of category dropdown inputs.')#">
+                            <xar:mlstring>Default input size</xar:mlstring>
+                        </label>
+                        <div class="xar-form-container-after">
+                            <input type="text" name="inputsize" id="inputsize" class="xar-form-textshort" maxlength="4" value="#$inputsize#" />
+                            &#160;
+                            <xar:mlstring>Use 0 value for auto-sizing</xar:mlstring>
+                        </div>
+                    </div>
+                    <div class="xar-form-input-wrapper-after">
+                        <xar:data-input type="checkbox" name="singleinput" id="singleinput" value="1" checked="$singleinput" />
+                        <label for="singleinput" title="#xarML('Use a single select box for each and every category roots.')#">
+                            <xar:mlstring>
+                                Use a single select box
+                            </xar:mlstring>
+                        </label>
+                    </div>
+                    <div class="xar-form-input-wrapper-after">
+                        <xar:data-input type="checkbox" name="showtitle" id="showtitle" value="1" checked="$showtitle" />
+                        <label for="showtitle" title="#xarML('In many cases, you can see the item title if you want')#">
+                            <xar:mlstring>
+                                Show the item title in statistics
+                            </xar:mlstring>
+                        </label>
+                    </div>
+                   <div class="xar-form-input-wrapper-after">
+                        <xar:data-input type="checkbox" name="usenameinstead" id="usenameinstead" value="1" checked="$usenameinstead" />
+                        <label for="usenameinstead" title="#xarML('Use Category Name for display if Description is empty?')#">
+                                <xar:mlstring>
+                                    Use Category Name for display if Description is empty?
+                                </xar:mlstring>
+                        </label>
+                    </div>
+                    <div class="xar-form-input-wrapper-after">
+                        <xar:data-input type="checkbox" name="allowdragdrop" id="allowdragdrop" value="1" checked="$allowdragdrop" />
+                        <label for="allowdragdrop" title="#xarML('Allow drag drop reordering of categories in the Category View page?')#">
+                                <xar:mlstring>
+                                   Allow drag drop reordering in Category View page? [todo - incomplete]
+                                </xar:mlstring>
+                        </label>
+                        <comment>Need to update for latest treetable v3.0 and complete</comment>
+                    </div>
+                <xar:comment> Keep this value TRUE/ON for now until rework is complete
+                <fieldset class="xar-norm">
+                    <legend>
+                        <xar:mlstring>Security</xar:mlstring>
+                    </legend>
+                    <div class="xar-form-input-wrapper-after">
+                        <xar:data-input type="checkbox" name="sectestall" id="sectestall" value="1" checked="$sectestall" />
+                        <label for="sectestall" title="#xarML('Test all the categories to grant access to an object linked to several categories?')#">
+                                <xar:mlstring>
+                                    User must have access to all item categories to view that item?
+                                </xar:mlstring>
+                        </label>
+                       <!--Place holder for Extended Privileges-->
+                    </div>
+                </fieldset>
+                  </xar:comment>
+
+                </fieldset>
+                    <xar:if condition="!empty($hooks)">
+                        <fieldset >
+                            <legend>
+                                 <xar:mlstring>Hooks</xar:mlstring>
+                            </legend>
+                            <xar:if condition="!empty($hooks)">
+                                <xar:foreach in="$hooks" key="$module" value="$output">
+                                    #$output#
+                                </xar:foreach>
+                            </xar:if>
+                        </fieldset>
+                    </xar:if>
+                    <div class="xar-form-footer">
+                        <input type="hidden" name="authid" id="authid" value="#xarSecGenAuthKey()#" />
+                        <input type="hidden" name="phase" id="phase" value="update" />
+                        <input type="submit" value="#xarML('Submit')#" />
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,124 @@
+<xar:comment> License: GPL http://www.gnu.org/copyleft/gpl.html </xar:comment>
+<xar:base-include-javascript libname="jquery" libfile="jquery.min" plugin="ui" pluginfile="ui.all.min" style="ui.css" position="body"/>
+<xar:template file="jq-category-viewcats-render" module="categories" />
+<xar:style file="xgamisprites" module="base" scope="module" />
+<xar:set name="nalabel"><xar:mlstring>Not available</xar:mlstring></xar:set>
+<xar:set name="modify"><xar:mlstring>Modify</xar:mlstring></xar:set>
+<xar:set name="delete"><xar:mlstring>Delete</xar:mlstring></xar:set>
+<div class="xar-mod-page">
+    <div class="xar-mod-head">
+        <xar:if condition="!xarRequestIsAJAX()">
+            <xar:template type="module"  module="base" file="admin-menu" />
+        </xar:if>
+    </div>
+    <div class="xar-mod-body">
+        <h1>
+            <xar:mlstring>View categories</xar:mlstring>
+        </h1>
+        <div class="xar-mod-content">
+            <div id="catmessage" class="xar-error"></div>
+            <form id="categorytreeform" action="#" method="post">
+
+            <table class="xar-items" id="categoryview">
+                <caption id="checkcontrols"></caption>
+                <thead class="treetable">
+                    <tr>
+                        <th><xar:mlstring>Name</xar:mlstring></th>
+                        <th><xar:mlstring>Description</xar:mlstring></th>
+                        <th><xar:mlstring>Image</xar:mlstring></th>
+                        <th class="xar-align-center"><xar:mlstring>Options</xar:mlstring></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <xar:set name="rowclass">'xar-norm'</xar:set>
+                    <xar:set name="childid">''</xar:set>
+                    <xar:loop name="$categories">
+                        <xar:set name="parentid">$loop->item['parent']>0?$loop->item['parent']:'';</xar:set>
+                        <xar:set name="childid">$loop->item['cid']>0?$loop->item['cid']:'';</xar:set>
+                        <xar:set name="parentclass">$loop->item['parent']>0?"child-of-node-{$loop->item['parent']}":'parent';</xar:set>
+                        <xar:set name="iconclass">$loop->item['children']>0?'folder':'file';</xar:set>
+                        <tr data-tt-parent-id="#$parentid#" class="#$rowclass#" data-tt-id="#$childid#">
+                            <td class="catitem">
+                               <span class="js_disabled">#$loop:item.xar_map#</span>
+                               <span class="#$iconclass#" id="name-#$loop:item.cid#">#xarVarPrepForDisplay($loop:item.name)#</span>
+                            </td>
+                            <td class="ciddescription">#xarVarPrepForDisplay($loop:item.description)#</td>
+                            <td class="cidimage"><xar:if condition="empty($loop:item.image)">&#160;<xar:else />#$loop:item.image#</xar:if></td>
+                            <td class="xar-align-center">
+                                <xar:set name="curcatid">#$loop:item.cid#</xar:set>
+                                <xar:sec mask="EditCategories" component="Category" instance="All:$curcatid" catch="false">
+                                    <a  class="esprite xs-modify" href="#xarModURL('categories', 'admin', 'modifycat', array('cid' => $loop:item['cid']))#" title="#$modify#"><span>#$modify#</span></a>
+                                <xar:else />
+                                     <p class="esprite xar-icon-disabled xs-modify xar-displayinline" title="#$nalabel#"><span>#$nalabel#</span></p>
+                                </xar:sec>&#160;
+                                <xar:sec mask="DeleteCategories" component="Category" instance="All:$curcatid" catch="false">
+                                    <a  class="esprite xs-delete" id="delete_#$loop:item['cid']#" href="#xarModURL('categories', 'admin', 'deletecat', array('cid' => $loop:item['cid']))#" title="#$delete#"><span>#$delete#</span></a>
+                                <xar:else />
+                                    <p class="esprite xar-icon-disabled xs-delete xar-displayinline" title="#$nalabel#"><span>#$nalabel#</span></p>
+                                </xar:sec>
+                            </td>
+                        </tr>
+                        <xar:set name="rowclass">$rowclass == 'xar-norm' ? 'xar-accent' : 'xar-norm'</xar:set>
+                    </xar:loop>
+                </tbody>
+            </table>
+            </form>
+            <table id="pager">
+                <tr>
+                    <td>
+                        <xar:for start="$i = 1" test="$i le ($pagertotal - $catsperpage)" iter="$i += $catsperpage">
+                            <xar:if condition="$i le $pagerstart  AND ($i + $catsperpage) gt $pagerstart">
+                                #$i#-#$i+$catsperpage-1#
+                            <xar:else />
+                                <a href="#xarModURL('categories', 'admin', 'viewcats', array('pagerstart' => $i, 'catsperpage' => $catsperpage))#">
+                                    #$i#-#$i+$catsperpage-1#
+                                </a>
+                            </xar:if>
+                            <xar:if condition="(($i%100) eq 1) and ($i ne 1)">
+                                <br />
+                            <xar:else />
+                                &#160;|&#160;
+                            </xar:if>
+                        </xar:for>
+                        <xar:if condition="$i eq $pagertotal">
+                            <xar:if condition="$i le $pagerstart  AND ($i + $catsperpage) gt $pagerstart">
+                                #$i#
+                            <xar:else />
+                                <a href="#xarModURL('categories', 'admin', 'viewcats', array('pagerstart' =&gt; $i, 'catsperpage' =&gt; $catsperpage))#">
+                                    #$i#
+                                </a>
+                            </xar:if>
+                        </xar:if>
+                        <xar:if condition="$i lt $pagertotal">
+                            <xar:if condition="$i le $pagerstart  AND ($i + $catsperpage) gt $pagerstart">
+                                #$i#-#$pagertotal#
+                            <xar:else />
+                                <a href="#xarModURL('categories', 'admin', 'viewcats', array('pagerstart' =&gt; $i, 'catsperpage' =&gt; $catsperpage))#">
+                                    #$i#-#$pagertotal#
+                                </a>
+                            </xar:if>
+                        </xar:if>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <form action="#xarModURL('categories','admin','viewcats')#" method="post">
+                            <div class="xar-form-input-wrapper">
+                                <label>
+                                    <xar:mlstring>Categories per page:</xar:mlstring>
+                                </label>
+                                <input type="text" name="catsperpage" id="catsperpage" value="#$catsperpage#" size="5" />
+                                <input type="submit" value="#$reloadlabel#" />
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><xar:mlstring>Categories Total:</xar:mlstring>&nbsp;#$pagertotal#</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

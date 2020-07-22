@@ -1,0 +1,33 @@
+- version 2.5.4: 2013-04-1
+      Upgrade the treatable plugin, css and images for query 1.9.x and treeTable 3.0
+	Note that this requires template change and css update - plus check your template overrides.
+- version 2.5.4: 2012-02-19
+      Fix modify config hook: should never use the single make select.
+- version 2.5.3: 2012-02-01
+    - xcat-000969 Several bug fixes concerning catnav menu
+    - xcat-000968/000958 Improvements on visual makeselect (auto-sizing, using a merged single select as config options) plus bug fixes.
+- version 2.5.1: 2011-09-08
+    - fix mixed article sub items in menu array visual API (cat nav menu)
+    - allow several item types with article links root level in cat nav menu.
+    - automerge cids/itemtypes in cat nav
+    - item types from article use now the sort order specified in their itemtype configuration in catnav menu
+    - enhanced the choices for base cats in cat nav admin
+
+- version 2.5.0: 2011-08-17 
+    - xcat-000662 Fix wrong indentation in visual make select. (version 2.4.2)
+    - xcat-000880 Rewrite the menu visual API and optionally include article sub items in catnav menu block
+    - xcat-000881 Several changes to improve the layout and theming, and smooth working with the latest 1.4 core and articles module.
+
+- version 2.4.1: 2010-04-25
+    - Switch for one/all category access
+      http://xarigami.com/contrails/display/xcat/554
+    - Extended privileges classes are moved into xarclass folder.
+
+- version 2.4.0: 2010-03-28
+    First steps to the enhanced extended privileges implementation.
+    http://xarigami.com/contrails/display/xcat/538
+
+- Version 2.3.4: 2007-07-26 by 2skies.com
+    Updated for new core security management of blocks.
+    Categories instances for blocks removed and block security checks.
+    This is all now handled from xarigami core.

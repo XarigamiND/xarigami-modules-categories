@@ -1,0 +1,95 @@
+<xar:comment>License: GPL http://www.gnu.org/copyleft/gpl.html</xar:comment>
+<div class="xar-mod-page">
+    <div class="xar-mod-head">
+        <xar:if condition="!xarRequestIsAJAX()">
+            <xar:template type="module"  module="base" file="admin-menu" />
+        </xar:if>
+    </div>
+    <div class="xar-mod-body">
+        <h1>
+        <xar:if condition="$func eq 'modify'">
+            <xar:mlstring>Modify Category</xar:mlstring>
+            <xar:else />
+            <xar:mlstring>Create New Category</xar:mlstring>
+        </xar:if>
+        </h1>
+        <div class="xar-mod-content">
+            <form action="#xarModURL('categories','admin','updatecat')#" id="post" method="post" enctype="application/x-www-form-urlencoded">
+                <div class="xar-form-input-wrapper">
+                    <label for="repeat" class="xar-form-label help" title="#xarML('Number of categories in this Batch.')#">
+                        <xar:mlstring>Category number in batch:</xar:mlstring>
+                    </label>
+                    <input class="xar-form-textlong" type="text" name="repeat" id="repeat" value="#$repeat#" />
+                    <input type="submit" name="reassign" id="reassign" size="3" value="#xarML('Add batch input form')#" />
+                </div>
+
+                <xar:for iter="$i++" start="$i=0" test="$i lt $repeat">
+                    <fieldset class="xar-norm">
+                        <legend>
+                            <xar:mlstring>Category</xar:mlstring>#$i+1#
+                        </legend>
+                        <div class="xar-form-input-wrapper">
+                            <input type="hidden" name="cids[]" id="cids_#$cid#" value="#$cid#" />
+                            <label for="name_#$cid#" class="xar-form-label help" title="#xarML('The name of the category.')#">
+                                <xar:mlstring>Name</xar:mlstring>
+                            </label>
+                            <input class="xar-form-textlong" type="text" name="name[#$cid#]" id="name_#$cid#" value="#xarVarPrepForDisplay($category.name)#" size="32" maxlength="64" />
+                        </div>
+                        <div class="xar-form-input-wrapper">
+                            <label for="description_#$cid#" class="xar-form-label help" title="#xarML('The description of the category.')#">
+                                <xar:mlstring>Description</xar:mlstring>
+                            </label>
+                            <div class="xar-form-container-after">
+                                <textarea class="xar-form-textareasmall" name="description[#$cid#]" id="description_#$cid#" cols="40" rows="3" maxlength="255">#xarVarPrepForDisplay($category.description)#</textarea>
+                            </div>
+                        </div>
+                        <xar:template file="localization" type="module" />
+                        <div class="xar-form-input-wrapper">
+                            <label for="image_#$cid#" class="xar-form-label help" title="#xarML('In modules/categories/xarimages. Theme-dependent versions can then be placed in themes/[theme name]/modules/categories/images')#">
+                                <xar:mlstring>Optional Image</xar:mlstring>
+                            </label>
+                            <select name="image[#$cid#]" id="image_#$cid#">
+                                <xar:loop name="$imageoptions">
+                                    <xar:if condition="!empty($category['image']) and $category['image'] eq $loop:item['name']">
+                                        <option value="#xarVarPrepForDisplay($loop:item.id)#" selected="selected">#xarVarPrepForDisplay($loop:item.name)#</option>
+                                    <xar:else />
+                                        <option value="#xarVarPrepForDisplay($loop:item.id)#">#xarVarPrepForDisplay($loop:item.name)#</option>
+                                    </xar:if>
+                                </xar:loop>
+                            </select>
+                        </div>
+                    </fieldset>
+                    <xar:if condition="!empty($hooks)">
+                        <div class="xar-form-input-wrapper">
+                            <fieldset class="xar-norm">
+                                <legend>
+                                    <xar:mlstring>Hooks</xar:mlstring>
+                                </legend>
+                                <xar:if condition="!empty($hooks)">
+                                    <xar:foreach in="$hooks" key="$module" value="$output">#$output#</xar:foreach>
+                                </xar:if>
+                            </fieldset>
+                        </div>
+                    </xar:if>
+                </xar:for>
+                <div class="xar-form-footer">
+                    <input type="hidden" name="authid" id="authid" value="#xarSecGenAuthKey()#" />
+                    <xar:if condition="$func eq 'modify'">
+                        <input type="submit" value="#xarML('Update')#" />
+                        <input type="hidden" name="creating" id="creating" value="false" />
+                    <xar:else />
+                        <input type="submit" value="#xarML('Add')#" />
+                        <input type="hidden" name="creating" id="creating" value="true" />
+                    </xar:if>
+                    <xar:comment>
+                        <input type="reset" value="#xarML('Reset')#" />
+                    </xar:comment>
+                    <xar:if condition="!empty($return_url)">
+                        <input type="hidden" name="return_url" value="#$return_url#" />
+                    </xar:if>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

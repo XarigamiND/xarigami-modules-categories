@@ -1,0 +1,162 @@
+<xar:base-include-javascript libname="jquery" libfile="jquery.min" position="body" plugin="treetable" pluginfile="jquery.treetable" style="stylesheets/jquery.treetable.css" module="categories"/>
+<xar:set name="expandall"><xar:mlstring>Expand all</xar:mlstring></xar:set>
+<xar:set name="submiturl">xarModURL('categories','admin','updatecat',array(),false)</xar:set>
+<xar:set name="collapseall"><xar:mlstring>Collapse all</xar:mlstring></xar:set>
+
+<xar:set name="catcode">"
+jQuery(document).ready(function() {
+    var dialog_width = 350;
+    var dialog_height = 'auto';
+    var expandall = \"$expandall\";
+    var collapseall = \"$collapseall\";
+    jQuery('span[class=js_disabled]').hide();
+    jQuery('#categoryview').treetable({
+        expandable: true,
+        clickableNodeNames: true,
+        initialState :'expanded',
+        treeColumn: 0,
+        nodeIdAttr: 'ttId',
+        parentIdAttr: 'ttParentId',
+        indent: 19
+    });
+
+    jQuery('#"."checkcontrols').append('[ <a href=\"#\" class=\"items_collapsetoggle \" >'+collapseall+'</a> | <a href=\"#\" class=\"items_expandtoggle\" >'+expandall+'</a> ]');
+    jQuery('a.items_collapsetoggle').click(function() {
+        jQuery('#"."categoryview').treetable(\"collapseAll\");
+        return false;
+    });
+    jQuery('a.items_expandtoggle').click(function() {
+        jQuery('#"."categoryview').treetable(\"expandAll\");
+        return false;
+    });
+
+    jQuery('#categoryview a[id^=delete]').click(function() {
+        var a = this;
+        jQuery('#"."xardialogtarget').remove();
+        jQuery('body').append('" . chr(60) . "div id=\'xardialogtarget\' style=\'display: none;\'" . chr(62) . chr(60) . "/div" . chr(62) . "');
+        jQuery('#" . "xardialogtarget').load(this.getAttribute('href') + '".chr(38)."pageName=module .xar-mod-body ".chr(62)." *').dialog({
+            title: '" . xarML('Delete Category') . "',
+            width: dialog_width,
+            height: dialog_height,
+            buttons: {
+                '". xarML('Cancel') . "': function() { jQuery(this).dialog('close'); },
+                '". xarML('Delete') . "': function() { jQuery('#"."xardialogtarget form#deletecatform').submit(); }
+            },
+            modal: true,
+            draggable: false,
+            resizable: true
+        });
+        return false;
+    });
+
+});
+"</xar:set>
+
+<xar:base-include-javascript type="code" code="$catcode" position="body"/>
+<xar:set name="catdragcode">"
+jQuery(document).ready(function() {
+
+
+    // Configure draggable nodes
+    jQuery('#categoryview .file, #categoryview .folder').draggable({
+        helper: 'clone',
+        opacity: .75,
+        refreshPositions: true, // Performance?
+        revert: 'invalid',
+        revertDuration: 300,
+        scroll: true
+    });
+    // Configure droppable rows
+    jQuery('#categoryview .file, #categoryview .folder').css('cursor','move');
+    jQuery('#"."categoryview span.folder, #"."categoryview span.file, #categoryview span.folderdrop').each(function() {
+        //to do - finish all this
+        jQuery(this).parents('tr').droppable({
+            accept: '.file,.folder',
+            drop: function(e, ui) {
+                // Call jQuery treeTable plugin to move the branch
+                $(this).addClass('ui-state-highlight');
+                var parentTr = jQuery(jQuery(ui.draggable).parents('tr'));
+                parentTr.appendBranchTo(this);
+                var thisId = parentTr.attr('id');
+                var parentId = this.id;
+                var thiscid = thisId.replace(/node\-/g, '');
+                var parentcid = parentId.replace(/node\-/g, '');
+                var submiturl=\"$submiturl\";
+                var cidname = $(parentTr).find('td').find('span[id^=name-]').html();
+                var ciddescription = $(parentTr).find('td').not(':has(span)').html();
+                var cidimage = $(parentTr).find('td:nth(2)').html();
+                var thesecids = [thiscid];
+                var thisauth = '".xarSecGenAuthKey()."';
+                var moving = {};
+                var catexists ={};
+                var refcid = {};
+                var name = {};
+                var position = {};
+                var cids = {};
+                 var catexists = {};
+                var description = {};
+                var image = {};
+                catexists[thiscid] = true;
+                moving[thiscid] = true;
+                catexists[thiscid] = true;
+                refcid[thiscid] = parentcid;
+                name[thiscid] = cidname;
+                description[thiscid] = ciddescription;
+                position[thiscid] = 4;
+                 image[thiscid] = cidimage;
+                //var dataString = 'cid='+ thiscid  + '&moving=1' + '&bypass=1' + '&refcid='+ parentcid + '&cids=' + thesecids + '&name='+cidname + '&authid=' + thisauth;
+                 $(this).removeClass('ui-state-highlight');
+                jQuery.ajax({
+                    type: 'GET',
+                    url: submiturl,
+                   // data: dataString,
+                    success: function() {
+                     $('#catmessage').html('<strong>Category \'' + cidname+ '\' moved!</strong>')
+                    },
+
+                  data: {cid: thiscid,
+                         cids: thesecids,
+                         moving: moving,
+                         creating: false,
+                         refcid:refcid,
+                         name: name,
+                         position: position,
+                         bypass: 1,
+                         authid: thisauth,
+                         reassign: 0,
+                         catexists: catexists,
+                         image: image,
+                         description: description
+                         }
+                });
+                return false;
+
+            },
+            hoverClass: 'accept',
+            over: function(e, ui) {
+                // Make the droppable branch expand when a draggable node is moved over it.
+                if(this.id != ui.draggable.parents('tr')[0].id && !$(this).is('.expanded')) {
+                    $(this).expand();
+
+                }
+            }
+        });
+    });
+
+    // Make visible that a row is clicked
+    jQuery('table#categoryview tbody tr').mousedown(function() {
+        jQuery('tr.selected').removeClass('selected'); // Deselect currently selected rows
+        jQuery(this).addClass('selected');
+    });
+
+    // Make sure row is selected when span is clicked
+    jQuery('table#categoryview tbody tr span').mousedown(function() {
+        jQuery(jQuery(this).parents('tr')[0]).trigger('mousedown');
+    });
+});
+"
+</xar:set>
+
+<xar:if condition="$allowdragdrop">
+<xar:base-include-javascript type="code" code="$catdragcode" position="body"/>
+</xar:if>

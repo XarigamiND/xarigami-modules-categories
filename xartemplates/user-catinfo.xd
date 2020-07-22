@@ -1,0 +1,11 @@
+<xar:comment> License: GPL http://www.gnu.org/copyleft/gpl.html </xar:comment>
+<xar:if condition="!empty($cats)">
+    <xar:loop name="$cats">
+        <xar:if condition="$loop:index ne 0">, </xar:if>
+        #$loop:item.name#
+    </xar:loop>
+<xar:else/>
+    <xar:if condition ="!empty($ifempty)">
+        #xarML($ifempty)#
+    </xar:if>
+</xar:if>

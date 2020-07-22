@@ -1,0 +1,56 @@
+<xar:comment> License: GPL http://www.gnu.org/copyleft/gpl.html </xar:comment>
+<div class="xar-mod-page">
+    <div class="xar-mod-head">
+        <xar:if condition="!xarRequestIsAJAX()">
+            <xar:template type="module"  module="base" file="admin-menu" />
+        </xar:if>
+    </div>
+    <div class="xar-mod-body">
+        <h1>
+            <xar:mlstring>Overview</xar:mlstring>
+        </h1>
+        <div class="xar-mod-content">
+            <h2>
+                    <xar:mlstring>What is it?</xar:mlstring>
+            </h2>
+                <p><em><xar:mlstring>Categories is a Xaraya Utility Module.</xar:mlstring></em>
+                    <xar:mlstring>It is currently responsible for accomplishing these tasks:</xar:mlstring>
+                    <ul>
+                        <li><xar:mlstring>Allows the use of site wide categories for content modules to use as needed.</xar:mlstring></li>
+                    </ul>
+                </p>
+                <h3>
+                    <xar:mlstring>How to use it?</xar:mlstring>
+               </h3>
+                <p><xar:mlstring>From the menu, you have two choices.  'Add a New Category', and 'View Categories'.</xar:mlstring>
+                    <ul>
+                        <li><xar:mlstring>Add a new category -- Allows you to add a new category to your site categories tree.</xar:mlstring></li>
+                        <li><xar:mlstring>View Categories -- This area allows you to view the entire categorization tree, allowing a easy way to modify it.</xar:mlstring></li>
+                    </ul>
+                </p>
+                <h3>
+                    <xar:mlstring>Included Blocks</xar:mlstring>
+                </h3>
+                <p>
+                    <xar:mlstring>The Navigation block allows navigation of any module using the category hooks.</xar:mlstring>
+                </p>
+                 <h3>
+                    <xar:mlstring>Included Hooks</xar:mlstring>
+            </h3>
+                <p>
+                    <xar:mlstring>Categories provides all the hooks necessary to allow categories to be available within other modules.</xar:mlstring>
+                </p>
+                <h3><xar:mlstring>Further Information</xar:mlstring></h3>
+            <p>
+               <xar:mlstring>Extended information about this module can be found at </xar:mlstring><a title="#xarML('Xarigami Categories Module')#" href="http://http://xarigami.com/project/xarigami_categories">Xarigami Projects</a>.
+               </p>
+              <ul>
+                  <li><xar:mlstring>Related tutorials and documentation on Categories found at</xar:mlstring> <a href="http://http://xarigami.com/project/xarigami_categories?page=resources" title="#xarML('Related documentation on Categories')#"><xar:mlstring>Xarigami Resources.</xar:mlstring></a>
+                  </li>
+              </ul>
+              <p class="xar-sub">
+                 <strong>&#160;<xar:mlstring>Xarigami Categories module Overview</xar:mlstring></strong><br />&#160;<xar:mlstring>Revision</xar:mlstring> 2.3.2&#160; 23 April 2009
+            </p>
+        </div>
+    </div>
+</div>
