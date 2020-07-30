@@ -62,10 +62,9 @@ function categories_userapi_getallcatbases($args)
         );
     } elseif (!empty($modules) && is_array($modules)) {
         // Array of module names supplied.
-        $mapfunc = create_function(
-            '$module',
-            'return array("module"=>$module,"modid"=>xarModGetIDfromName($module));'
-        );
+        $mapfunc = function($module) {
+            return array("module" => $module, "modid" => xarModGetIDfromName($module));
+        };
         $modlist = array_map($mapfunc, $modules);
     } elseif (!empty($modid) && is_numeric($modid)) {
         // Single module id supplied
@@ -76,11 +75,10 @@ function categories_userapi_getallcatbases($args)
         );
     } elseif (!empty($modids) && is_array($modids)) {
         // Array of modids supplied
-        $mapfunc = create_function(
-            '$modid',
-            '$modinfo = xarModGetInfo($modid);'
-            .'return array("module"=>$modinfo["name"],"modid"=>$modid);'
-        );
+        $mapfunc = function($modid) {
+           $modinfo = xarModGetInfo($modid);
+           return array("module" => $modinfo["name"], "modid" => $modid);
+        };
         $modlist = array_map($mapfunc, $modids);
     } else {
         $itemtype = null;
@@ -238,10 +236,10 @@ function categories_userapi_getallcatbases($args)
         foreach($order as $orderelement) {
             // TODO: allow reverse order using '-orderelement', e.g. '-cid'.
             if ($orderelement == 'order' || $orderelement == 'cid' || $orderelement == 'module' || $orderelement == 'modid') {
-                $sortfunc = create_function(
-                    '$a,$b',
-                    'if ($a["'.$orderelement.'"]==$b["'.$orderelement.'"]) {return 0;}'
-                    .' return ($a["'.$orderelement.'"] < $b["'.$orderelement.'"]) ? -1 : 1;');
+                $sortfunc = function ($a,$b) use ($orderelement) {
+                    if ($a[$orderelement] == $b[$orderelement]) { return 0; }
+                    return ($a[$orderelement] < $b[$orderelement]) ? -1 : 1;
+                };
                 usort($result, $sortfunc);
             }
             // TODO: fix - can only order by one element, so skip the rest.

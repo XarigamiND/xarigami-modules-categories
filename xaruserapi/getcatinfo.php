@@ -31,11 +31,6 @@ function categories_userapi_getcatinfo($args)
     // TODO: when categories is one big class, then cacheing can be shared between all APIs.
     static $s_cache = array();
 
-    // User function for setting all elements of an array NULL
-    static $s_func_null_array = NULL;
-
-    if (!isset($s_func_null_array)) $s_func_null_array = create_function('&$a', '$a = NULL;');
-
     // TODO: additional validation - cid should be an ID and cids an array of IDs.
     if (!isset($cid) && !isset($cids)) {
         return false;
@@ -59,7 +54,8 @@ function categories_userapi_getcatinfo($args)
         // This may (with luck) result in nothing to query at all.
         // Start by creating a placeholder array(cid1 => NULL, cid2 => NULL, etc).
         $info = array_flip($cids);
-        array_walk($info, $s_func_null_array);
+        array_walk($info, function(&$a) { $a = NULL; } );
+
 
         foreach($cids as $ckey => $ccid) {
             if (isset($s_cache[$ccid])) {
