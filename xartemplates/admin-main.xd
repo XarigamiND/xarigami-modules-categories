@@ -41,13 +41,10 @@
                     <xar:mlstring>Categories provides all the hooks necessary to allow categories to be available within other modules.</xar:mlstring>
                 </p>
                 <h3><xar:mlstring>Further Information</xar:mlstring></h3>
-            <p>
-               <xar:mlstring>Extended information about this module can be found at </xar:mlstring><a title="#xarML('Xarigami Categories Module')#" href="http://http://xarigami.com/project/xarigami_categories">Xarigami Projects</a>.
-               </p>
-              <ul>
-                  <li><xar:mlstring>Related tutorials and documentation on Categories found at</xar:mlstring> <a href="http://http://xarigami.com/project/xarigami_categories?page=resources" title="#xarML('Related documentation on Categories')#"><xar:mlstring>Xarigami Resources.</xar:mlstring></a>
-                  </li>
-              </ul>
+            <ul>
+               <li><a href="http://xarigami.org/project/xarigami_categories"><xar:mlstring>Xarigami Categories project page</xar:mlstring></a></li>
+                <li><a href="http://xarigami.org/contrails/displayproject/xcat"><xar:mlstring>Xarigami Categories issue tracker</xar:mlstring></a></li>
+             </ul>
               <p class="xar-sub">
                  <strong>&#160;<xar:mlstring>Xarigami Categories module Overview</xar:mlstring></strong><br />&#160;<xar:mlstring>Revision</xar:mlstring> 2.3.2&#160; 23 April 2009
             </p>
